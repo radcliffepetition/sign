@@ -2,11 +2,11 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background: #0073e6;
+  background: #f4f4f9;
 }
 
 nav {
-  background: #333;
+  background: #0073e6;
   color: white;
   display: flex;
   justify-content: space-between;
@@ -66,4 +66,5 @@ button:hover {
   margin-top: 20px;
   color: #555;
 }
+
 
