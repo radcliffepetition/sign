@@ -2,12 +2,12 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background: #0073e6; /* Page background set to blue */
+  background: #f4f4f9;
 }
 
 nav {
-  background: #ffffff; /* Top bar background is white */
-  color: black; /* Top bar text color */
+  background: #0073e6; /* Top bar color */
+  color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -15,7 +15,7 @@ nav {
 }
 
 nav a {
-  color: black; /* Link color inside nav */
+  color: white;
   text-decoration: none;
   margin: 0 10px;
   font-weight: bold;
