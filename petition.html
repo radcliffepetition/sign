@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>School Petition</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav>
+    <div><strong>School Petition</strong></div>
+    <div>
+      <a href="index.html">Home</a>
+      <a href="petition.html" class="active">Sign the Petition</a>
+      <a href="article.html">Article</a>
+    </div>
+  </nav>
+
+  <!-- Petition Section -->
+  <div class="container">
+    <h1>Sign the Petition</h1>
+    <p>Join us in making our school safer and better maintained by signing this petition.</p>
+
+    <!-- Petition Form -->
+    <form id="petition-form">
+      <input type="text" id="name" placeholder="Enter your name" required>
+      <button type="submit" class="btn">Sign Petition</button>
+    </form>
+
+    <!-- Signature Counter -->
+    <h2>Total Signatures: <span id="signature-count">0</span></h2>
+
+    <!-- Signature List -->
+    <h3>Signatures:</h3>
+    <ul id="signature-list"></ul>
+  </div>
+
+  <script>
+    // Supabase connection
+    const SUPABASE_URL = "https://bejpcodgiomzjotilszi.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJlanBjb2RnaW9tempvdGlsc3ppIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTczNjY0MTQsImV4cCI6MjA3Mjk0MjQxNH0.adLlSOXCy52Fj5HmQEbUt7ls8YVadP4bKSncAdCEe6Y";
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const form = document.getElementById("petition-form");
+    const countSpan = document.getElementById("signature-count");
+    const list = document.getElementById("signature-list");
+
+    // Load signatures & count
+    async function loadSignatures() {
+      let { data, error, count } = await supabase
+        .from("signatures")
+        .select("*", { count: "exact" })
+        .order("id", { ascending: false });
+
+      if (!error) {
+        // Update count
+        countSpan.textContent = count;
+
+        // Update list
+        list.innerHTML = "";
+        data.forEach(sig => {
+          const li = document.createElement("li");
+          li.textContent = sig.name;
+          list.appendChild(li);
+        });
+      }
+    }
+
+    // Handle new signature
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      if (name) {
+        let { error } = await supabase
+          .from("signatures")
+          .insert([{ name }]);
+        if (!error) {
+          document.getElementById("name").value = "";
+          loadSignatures(); // update list + counter
+        }
+      }
+    });
+
+    // Initial load
+    loadSignatures();
+  </script>
+</body>
+</html>
